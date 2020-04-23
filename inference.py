@@ -97,7 +97,7 @@ def main():
 
     # Dataset used for training the model
     dataset_type = config['train_loader']['type']
-    assert dataset_type in ['VOC', 'COCO', 'CityScapes', 'ADE20K']
+    #assert dataset_type in ['VOC', 'COCO', 'CityScapes', 'ADE20K']
     if dataset_type == 'CityScapes': 
         scales = [0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25] 
     else:
@@ -126,6 +126,8 @@ def main():
         os.makedirs('outputs')
 
     image_files = sorted(glob(os.path.join(args.images, f'*.{args.extension}')))
+    print(os.path.join(args.images, f'*.{args.extension}'))
+    print(image_files)
     with torch.no_grad():
         tbar = tqdm(image_files, ncols=100)
         for img_file in tbar:

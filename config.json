@@ -1,58 +1,57 @@
 {
-    "name": "PSPNet",
+    "name": "training_name",
     "n_gpu": 1,
-    "use_synch_bn": true,
+    "use_synch_bn": false,
 
     "arch": {
-        "type": "PSPNet",
+        "type": "UNet",
         "args": {
             "backbone": "resnet50",
             "freeze_bn": false,
-            "freeze_backbone": false
+            "freeze_backbone": true
         }
     },
 
     "train_loader": {
-        "type": "VOC",
+        "type": "COCO",
         "args":{
-            "data_dir": "data/VOCtrainval_11-May-2012",
-            "batch_size": 8,
-            "base_size": 400,
-            "crop_size": 380,
+            "data_dir": "/mnt/data1/zaffaroni_data/COCO/",
+            "batch_size": 1,
+            "base_size": 224,
+            "crop_size": 200,
             "augment": true,
-            "shuffle": true,
+            "shuffle": false,
             "scale": true,
             "flip": true,
             "rotate": true,
             "blur": false,
-            "split": "train_aug",
+            "split": "train2017",
+            "val_split": 0.0,
             "num_workers": 8
         }
     },
 
     "val_loader": {
-        "type": "VOC",
+        "type": "COCO",
         "args":{
-            "data_dir": "data/VOCtrainval_11-May-2012",
-            "batch_size": 8,
-            "crop_size": 480,
+            "data_dir": "/mnt/data1/zaffaroni_data/COCO/",
+            "batch_size": 1,
+            "crop_size": 200,
             "val": true,
-            "split": "val",
+            "split": "val2017",
             "num_workers": 4
         }
     },
 
     "optimizer": {
-        "type": "SGD",
+        "type": "Adam",
         "differential_lr": true,
         "args":{
-            "lr": 0.01,
-            "weight_decay": 1e-4,
-            "momentum": 0.9
+            "lr": 0.001
         }
     },
 
-    "loss": "CrossEntropyLoss2d",
+    "loss": "LovaszSoftmax",
     "ignore_index": 255,
     "lr_scheduler": {
         "type": "Poly",
@@ -72,6 +71,6 @@
         "log_per_iter": 20,
 
         "val": true,
-        "val_per_epochs": 5
+        "val_per_epochs": 1
     }
 }

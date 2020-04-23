@@ -49,7 +49,7 @@ class Trainer(BaseTrainer):
         for batch_idx, (data, target) in enumerate(tbar):
             self.data_time.update(time.time() - tic)
             #data, target = data.to(self.device), target.to(self.device)
-            self.lr_scheduler.step(epoch=epoch-1)
+            #self.lr_scheduler.step(epoch=epoch-1) old version
 
             # LOSS & OPTIMIZE
             self.optimizer.zero_grad()
@@ -70,6 +70,8 @@ class Trainer(BaseTrainer):
             loss.backward()
             self.optimizer.step()
             self.total_loss.update(loss.item())
+
+            self.lr_scheduler.step(epoch=epoch-1) 
 
             # measure elapsed time
             self.batch_time.update(time.time() - tic)

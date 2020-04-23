@@ -37,10 +37,13 @@ class DiceLoss(nn.Module):
         self.smooth = smooth
 
     def forward(self, output, target):
+        #rint(target)
         if self.ignore_index not in range(target.min(), target.max()):
             if (target == self.ignore_index).sum() > 0:
                 target[target == self.ignore_index] = target.min()
         target = make_one_hot(target.unsqueeze(dim=1), classes=output.size()[1])
+        #print(target)
+        #print(output)
         output = F.softmax(output, dim=1)
         output_flat = output.contiguous().view(-1)
         target_flat = target.contiguous().view(-1)

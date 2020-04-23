@@ -11,6 +11,8 @@ from utils import Logger
 from utils.torchsummary import summary
 from trainer import Trainer
 
+#torch.backends.cudnn.enabled = False
+
 def get_instance(module, name, config, *args):
     # GET THE CORRESPONDING CLASS / FCT 
     return getattr(module, config[name]['type'])(*args, **config[name]['args'])
@@ -19,9 +21,13 @@ def main(config, resume):
     train_logger = Logger()
 
     # DATA LOADERS
+    val_split = config['train_loader']['args']['val_split']
     train_loader = get_instance(dataloaders, 'train_loader', config)
-    val_loader = get_instance(dataloaders, 'val_loader', config)
-
+    if val_split > 0:
+        val_loader = train_loader.get_val_loader()
+    else:
+        val_loader = get_instance(dataloaders, 'val_loader', config)
+    
     # MODEL
     model = get_instance(models, 'arch', config, train_loader.dataset.num_classes)
     print(f'\n{model}\n')

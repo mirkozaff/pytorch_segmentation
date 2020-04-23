@@ -190,11 +190,12 @@ Config files are in `.json` format:
             "rotate": true,       // Random rotation between 10 and -10 degrees
             "blur": true,         // Adding a slight amount of blut to the image
             "split": "train_aug", // Split to use, depend of the dataset
+            "val_split": 0.0,     // If higher than 0 it will use a random set of train set for validation
             "num_workers": 8
         }
     },
 
-    "val_loader": {     // Same for val, but no data augmentation, only a center crop
+    "val_loader": {     // Same for val, but no data augmentation, only a center crop, used only if val_split = 0
         "type": "VOC",
         "args":{
             "data_dir": "data/",
